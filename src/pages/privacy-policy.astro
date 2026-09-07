@@ -1,0 +1,82 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { site } from "../lib/site";
+
+const title = `Privacy policy — ${site.name}`;
+const description =
+  "Read the privacy policy for GST on MRP. All calculations run locally in your browser; we do not collect or store the amounts you enter.";
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  path="/privacy-policy"
+  eyebrow="Legal"
+  heading="Privacy policy"
+  intro="Your privacy matters. This policy explains what information the site does and does not collect."
+  updated="6 July 2026"
+>
+  <p>
+    This privacy policy describes how <strong>{site.name}</strong> ("we", "us"
+    or "our") handles information when you use this website. By using the site,
+    you agree to the practices described below.
+  </p>
+
+  <h2>Information we do not collect</h2>
+  <p>
+    The GST calculator runs entirely in your browser. The amounts, rates and any
+    values you enter are processed locally on your device and are never
+    transmitted to us or stored on a server. We do not ask you to create an
+    account and we do not collect your name, email or payment details to use the
+    calculator.
+  </p>
+
+  <h2>Information collected automatically</h2>
+  <p>
+    Like most websites, our hosting provider may automatically record basic
+    technical information such as your browser type, device type, approximate
+    region and the pages you visit. This data is aggregated, does not identify
+    you personally, and helps us understand overall usage and keep the site
+    reliable.
+  </p>
+
+  <h2>Cookies and analytics</h2>
+  <p>
+    The core calculator works without cookies. This site uses Google Analytics
+    (GA4) to measure aggregate traffic — for example, which pages are visited
+    and which device types are used. Google Analytics sets cookies to distinguish
+    visitors; no personally identifiable information from the calculator inputs
+    is ever sent. You can opt out by installing the
+    <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
+      Google Analytics opt-out browser add-on
+    </a>. If we add further analytics or advertising in the future, we will
+    update this policy and request your consent where required.
+  </p>
+
+  <h2>Third-party links</h2>
+  <p>
+    Our pages may link to external websites for reference. We are not responsible
+    for the content or privacy practices of those sites, and we encourage you to
+    review their policies before sharing any information.
+  </p>
+
+  <h2>Children's privacy</h2>
+  <p>
+    This site is a general-purpose calculator and is not directed at children. We
+    do not knowingly collect personal information from anyone, including
+    children.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    We may update this privacy policy from time to time to reflect changes in the
+    site or applicable law. When we do, we will revise the "last updated" date at
+    the top of this page.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    If you have questions about this privacy policy, please reach out through our
+    <a href="/contact">contact page</a>.
+  </p>
+</PageLayout>

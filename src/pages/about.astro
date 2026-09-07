@@ -1,0 +1,68 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { site } from "../lib/site";
+
+const title = `About us — ${site.name}`;
+const description =
+  "Learn about GST on MRP, a free and private GST calculator for India that helps you extract or add GST and see clear CGST, SGST and IGST breakdowns.";
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  path="/about"
+  eyebrow="About"
+  heading="About GST on MRP"
+  intro="A simple, honest tool that makes Indian GST easy to understand for shoppers, students, freelancers and small businesses."
+>
+  <p>
+    <strong>GST on MRP</strong> began with an everyday frustration: you buy
+    something at its printed price and have no easy way to see how much of it is
+    tax. Because the Maximum Retail Price already includes GST, the tax sits
+    hidden inside the number on the label. We built this tool to make that
+    hidden portion visible in seconds.
+  </p>
+
+  <h2>What we do</h2>
+  <p>
+    We provide two straightforward calculators. The first works in reverse,
+    pulling the base price and GST out of an inclusive MRP. The second adds GST
+    on top of a pre-tax amount to give you the final price. Both instantly show
+    the split into CGST, SGST and IGST, so you always understand where the tax
+    goes.
+  </p>
+
+  <h2>Who it is for</h2>
+  <ul>
+    <li>Shoppers who want to know the real value behind a price tag.</li>
+    <li>Freelancers and small businesses preparing quick estimates.</li>
+    <li>Students and professionals learning how GST works in practice.</li>
+    <li>Anyone double-checking a bill or invoice on the go.</li>
+  </ul>
+
+  <h2>Our principles</h2>
+  <p>
+    We care about three things: speed, clarity and privacy. The calculator runs
+    entirely in your browser, so nothing you type is sent to a server or stored
+    anywhere. There are no sign-ups, no tracking of your amounts and no limits
+    on how often you can use it.
+  </p>
+
+  <h2>A note on accuracy</h2>
+  <p>
+    Our results follow the standard GST formulas and are rounded to two decimal
+    places, which is ideal for quick checks and everyday understanding. For
+    official filings, invoices or legal purposes, please confirm the figures
+    against current government rules and your accounting software, since rounding
+    conventions and rate classifications can vary.
+  </p>
+
+  <h2>Get in touch</h2>
+  <p>
+    Have a question, suggestion or correction? We would love to hear from you on
+    our <a href="/contact">contact page</a>. You can also read our
+    <a href="/privacy-policy">privacy policy</a> and
+    <a href="/terms-and-conditions">terms &amp; conditions</a> to learn more
+    about how the site works.
+  </p>
+</PageLayout>

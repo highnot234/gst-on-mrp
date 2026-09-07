@@ -1,0 +1,22 @@
+---
+/**
+ * Container — centered max-width wrapper with responsive horizontal padding.
+ * Use `as` to render a semantic element (section, div, footer, etc.).
+ */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+
+const { as = "div", class: className = "" } = Astro.props;
+const Tag = as;
+---
+
+<Tag
+  class:list={[
+    "mx-auto w-full max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8",
+    className,
+  ]}
+>
+  <slot />
+</Tag>

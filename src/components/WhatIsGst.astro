@@ -1,0 +1,64 @@
+---
+import Section from "./Section.astro";
+
+const slabs = [
+  { rate: "0%", use: "Essential items — fresh produce, basic staples" },
+  { rate: "0.25%", use: "Rough and semi-precious stones" },
+  { rate: "3%", use: "Gold, silver and other precious metals" },
+  { rate: "5%", use: "Household necessities and common packaged food" },
+  { rate: "12%", use: "Processed foods, apparel and select services" },
+  { rate: "18%", use: "Most standard goods and services" },
+  { rate: "28%", use: "Luxury and demerit goods" },
+];
+---
+
+<Section
+  id="what-is-gst"
+  eyebrow="The basics"
+  title="What is GST on MRP?"
+  description="Understanding how tax sits inside the price you pay at the counter."
+>
+  <div class="mx-auto mt-12 grid max-w-5xl gap-8 lg:grid-cols-2 lg:items-start">
+    <div class="prose-block space-y-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-2)]">
+      <p>
+        In India, <strong class="font-semibold text-[var(--color-ink)]">MRP</strong>
+        stands for Maximum Retail Price — the highest amount a seller can legally
+        charge for a packaged product. By design, this price is
+        <em>all-inclusive</em>: it already contains GST and every other applicable
+        tax. Nothing extra can be added on top at checkout.
+      </p>
+      <p>
+        That means the sticker price you see is a blend of two parts: the
+        product's true base value and the government's share as Goods and
+        Services Tax. To learn how much tax you actually paid, you reverse the
+        maths and pull the GST back out of the total.
+      </p>
+      <p>
+        This tool handles both directions. When you already have an inclusive
+        MRP, it extracts the base price and the embedded tax. When you have a
+        pre-tax figure, it adds the correct GST on top. Either way you get a
+        transparent CGST, SGST and IGST split.
+      </p>
+    </div>
+
+    <div class="card overflow-hidden">
+      <div class="border-b border-[var(--color-border)] bg-[var(--color-muted)] px-5 py-3">
+        <h3 class="text-sm font-semibold text-[var(--color-ink)]">
+          Common GST rate slabs in India
+        </h3>
+      </div>
+      <ul class="divide-y divide-[var(--color-border)]">
+        {
+          slabs.map((s) => (
+            <li class="flex items-center gap-4 px-5 py-3">
+              <span class="tnum inline-flex w-16 shrink-0 justify-center rounded-[var(--radius-full)] bg-[var(--color-accent-bg)] px-2 py-1 text-sm font-bold text-[var(--color-accent-ink)]">
+                {s.rate}
+              </span>
+              <span class="text-[0.9375rem] text-[var(--color-ink-2)]">{s.use}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</Section>

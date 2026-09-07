@@ -1,0 +1,382 @@
+---
+import Container from "./Container.astro";
+import { GST_RATES } from "../lib/gst";
+
+/** Result rows shared by both modes. The last row's label swaps per mode. */
+const resultRows = [
+  { key: "basePrice", label: "Base price", hint: "Price excluding GST", strong: false },
+  { key: "gstAmount", label: "GST amount", hint: "Total tax", strong: false },
+  { key: "cgst", label: "CGST", hint: "Central • intra-state", strong: false },
+  { key: "sgst", label: "SGST", hint: "State • intra-state", strong: false },
+  { key: "igst", label: "IGST", hint: "Integrated • inter-state", strong: false },
+] as const;
+---
+
+<section id="calculator" class="scroll-mt-24 bg-[var(--color-muted)] py-[clamp(4rem,8vw,7rem)]">
+  <Container>
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="eyebrow mb-3">Calculator</p>
+      <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold tracking-tight">
+        Calculate GST in two ways
+      </h2>
+      <p class="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-3)]">
+        Switch between extracting GST from an inclusive MRP and adding GST to a
+        base price. Everything updates live as you type.
+      </p>
+    </div>
+
+    <div
+      class="mx-auto mt-10 max-w-3xl overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-md)]"
+    >
+      <!-- Tabs (segmented control) -->
+      <div class="border-b border-[var(--color-border)] p-4 sm:p-5">
+        <div
+          role="tablist"
+          aria-label="Calculator mode"
+          id="calc-tablist"
+          class="grid grid-cols-2 gap-1 rounded-[var(--radius-full)] bg-[var(--color-muted)] p-1"
+        >
+          <button
+            role="tab"
+            id="tab-reverse"
+            aria-selected="true"
+            aria-controls="calc-panel"
+            data-mode="reverse"
+            class="calc-tab rounded-[var(--radius-full)] px-4 py-2.5 text-sm font-semibold text-[var(--color-ink-3)] transition-all duration-200 aria-selected:bg-[var(--color-surface)] aria-selected:text-[var(--color-ink)] aria-selected:shadow-[var(--shadow-sm)]"
+          >
+            Reverse GST <span class="hidden sm:inline">(from MRP)</span>
+          </button>
+          <button
+            role="tab"
+            id="tab-add"
+            aria-selected="false"
+            aria-controls="calc-panel"
+            data-mode="add"
+            tabindex="-1"
+            class="calc-tab rounded-[var(--radius-full)] px-4 py-2.5 text-sm font-semibold text-[var(--color-ink-3)] transition-all duration-200 aria-selected:bg-[var(--color-surface)] aria-selected:text-[var(--color-ink)] aria-selected:shadow-[var(--shadow-sm)]"
+          >
+            Add GST <span class="hidden sm:inline">(to price)</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="calc-panel" role="tabpanel" aria-labelledby="tab-reverse" class="p-5 sm:p-7">
+        <form id="calc-form" novalidate class="grid gap-6 lg:grid-cols-2 lg:gap-8">
+          <!-- Inputs -->
+          <div class="space-y-5">
+            <div>
+              <label
+                for="amount"
+                id="amount-label"
+                class="mb-1.5 block text-sm font-semibold text-[var(--color-ink)]"
+              >
+                MRP (GST inclusive)
+              </label>
+              <div class="relative">
+                <span
+                  class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-ink-3)]"
+                  aria-hidden="true">₹</span
+                >
+                <input
+                  id="amount"
+                  name="amount"
+                  type="text"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  placeholder="1,180.00"
+                  aria-describedby="amount-error"
+                  class="tnum h-12 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-8 pr-4 text-lg font-semibold text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-colors placeholder:font-normal placeholder:text-[var(--color-ink-4)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20 aria-[invalid=true]:border-red-400"
+                />
+              </div>
+              <p id="amount-error" role="alert" class="mt-1.5 hidden text-sm text-red-600"></p>
+            </div>
+
+            <div>
+              <label
+                for="rate"
+                class="mb-1.5 block text-sm font-semibold text-[var(--color-ink)]"
+              >
+                GST rate
+              </label>
+              <div class="flex gap-2">
+                <select
+                  id="rate"
+                  name="rate"
+                  class="tnum h-12 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-base font-medium text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+                >
+                  {GST_RATES.map((r) => (
+                    <option value={r} selected={r === 18}>{r}%</option>
+                  ))}
+                  <option value="custom">Custom…</option>
+                </select>
+                <input
+                  id="rate-custom"
+                  type="text"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  placeholder="e.g. 15"
+                  aria-label="Custom GST rate (percent)"
+                  class="tnum hidden h-12 w-28 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-base font-medium text-[var(--color-ink)] shadow-[var(--shadow-xs)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+                />
+              </div>
+              <p id="rate-error" role="alert" class="mt-1.5 hidden text-sm text-red-600"></p>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button
+                type="reset"
+                id="reset-btn"
+                class="inline-flex h-11 items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm font-semibold text-[var(--color-ink-2)] transition-colors hover:border-[var(--color-ink-4)] hover:text-[var(--color-ink)]"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 2v6h6"></path><path d="M3.51 15a9 9 0 1 0 2.13-9.36L3 8"></path>
+                </svg>
+                Reset
+              </button>
+              <button
+                type="button"
+                id="copy-btn"
+                disabled
+                class="inline-flex h-11 items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm font-semibold text-[var(--color-ink-2)] transition-colors hover:border-[var(--color-ink-4)] hover:text-[var(--color-ink)] disabled:opacity-50 disabled:pointer-events-none"
+              >
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span class="copy-label">Copy result</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div
+            class="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-muted)] p-5"
+          >
+            <div class="mb-4 flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-[var(--color-ink)]">Breakdown</h3>
+              <span
+                id="rate-badge"
+                class="tnum rounded-[var(--radius-full)] bg-[var(--color-accent-bg)] px-2.5 py-1 text-xs font-semibold text-[var(--color-accent-ink)]"
+                >18% GST</span
+              >
+            </div>
+
+            <dl class="space-y-1">
+              {resultRows.map((row) => (
+                <div class="flex items-center justify-between gap-4 rounded-[var(--radius-sm)] px-2 py-2 odd:bg-[color-mix(in_srgb,var(--color-surface)_60%,transparent)]">
+                  <dt>
+                    <span class="block text-sm font-medium text-[var(--color-ink-2)]">{row.label}</span>
+                    <span class="block text-xs text-[var(--color-ink-4)]">{row.hint}</span>
+                  </dt>
+                  <dd class="tnum text-right text-[0.9375rem] font-semibold text-[var(--color-ink)]" data-result={row.key}>—</dd>
+                </div>
+              ))}
+            </dl>
+
+            <div class="mt-3 flex items-center justify-between gap-4 rounded-[var(--radius-md)] border border-[var(--color-accent)]/20 bg-[var(--color-accent-bg)] px-3 py-3">
+              <dt class="text-sm font-semibold text-[var(--color-accent-ink)]" id="total-label">MRP (total)</dt>
+              <dd class="tnum text-right text-lg font-bold text-[var(--color-accent-ink)]" data-result="grossPrice">—</dd>
+            </div>
+
+            <p id="calc-hint" class="mt-3 text-center text-xs text-[var(--color-ink-4)]">
+              Enter an amount to see your GST breakdown.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<script>
+  import {
+    calculate,
+    validateInput,
+    parseAmount,
+    formatINR,
+    breakdownToText,
+    type GstMode,
+    type GstBreakdown,
+  } from "../lib/gst";
+
+  const form = document.getElementById("calc-form") as HTMLFormElement | null;
+  if (form) {
+    // Cache node references once — avoids repeated DOM queries per keystroke.
+    const tablist = document.getElementById("calc-tablist")!;
+    const tabs = Array.from(
+      tablist.querySelectorAll<HTMLButtonElement>(".calc-tab"),
+    );
+    const panel = document.getElementById("calc-panel")!;
+    const amountInput = document.getElementById("amount") as HTMLInputElement;
+    const amountLabel = document.getElementById("amount-label")!;
+    const amountError = document.getElementById("amount-error")!;
+    const rateSelect = document.getElementById("rate") as HTMLSelectElement;
+    const rateCustom = document.getElementById("rate-custom") as HTMLInputElement;
+    const rateError = document.getElementById("rate-error")!;
+    const rateBadge = document.getElementById("rate-badge")!;
+    const totalLabel = document.getElementById("total-label")!;
+    const hint = document.getElementById("calc-hint")!;
+    const copyBtn = document.getElementById("copy-btn") as HTMLButtonElement;
+    const copyLabel = copyBtn.querySelector(".copy-label")!;
+
+    const resultNodes = new Map<keyof GstBreakdown, HTMLElement>();
+    document
+      .querySelectorAll<HTMLElement>("[data-result]")
+      .forEach((el) => resultNodes.set(el.dataset.result as keyof GstBreakdown, el));
+
+    let mode: GstMode = "reverse";
+    let latest: GstBreakdown | null = null;
+    let copyTimer: number | undefined;
+
+    const labels = {
+      reverse: { amount: "MRP (GST inclusive)", total: "MRP (total)", placeholder: "1,180.00" },
+      add: { amount: "Base price (GST exclusive)", total: "Final price", placeholder: "1,000.00" },
+    } as const;
+
+    const getRate = (): number | null => {
+      if (rateSelect.value === "custom") return parseAmount(rateCustom.value);
+      return Number(rateSelect.value);
+    };
+
+    const clearResults = () => {
+      resultNodes.forEach((el) => (el.textContent = "—"));
+      latest = null;
+      copyBtn.disabled = true;
+    };
+
+    const showError = (node: HTMLElement, msg?: string) => {
+      if (msg) {
+        node.textContent = msg;
+        node.classList.remove("hidden");
+      } else {
+        node.textContent = "";
+        node.classList.add("hidden");
+      }
+    };
+
+    const render = () => {
+      const amount = parseAmount(amountInput.value);
+      const rate = getRate();
+
+      // Update the rate badge regardless of validity.
+      if (rate !== null && !Number.isNaN(rate)) {
+        rateBadge.textContent = `${rate}% GST`;
+      }
+
+      // Empty amount => neutral empty state, no error noise.
+      if (amount === null && amountInput.value.trim() === "") {
+        showError(amountError, undefined);
+        amountInput.setAttribute("aria-invalid", "false");
+        clearResults();
+        hint.textContent = "Enter an amount to see your GST breakdown.";
+        hint.classList.remove("hidden");
+        return;
+      }
+
+      const { valid, errors } = validateInput(amount, rate);
+      showError(amountError, errors.amount);
+      showError(rateError, errors.rate);
+      amountInput.setAttribute("aria-invalid", String(!!errors.amount));
+
+      if (!valid || amount === null || rate === null) {
+        clearResults();
+        return;
+      }
+
+      const b = calculate(mode, amount, rate);
+      latest = b;
+      resultNodes.forEach((el, key) => (el.textContent = formatINR(b[key] as number)));
+      copyBtn.disabled = false;
+      hint.classList.add("hidden");
+    };
+
+    const selectTab = (next: GstMode, focus = false) => {
+      mode = next;
+      tabs.forEach((t) => {
+        const selected = t.dataset.mode === next;
+        t.setAttribute("aria-selected", String(selected));
+        t.tabIndex = selected ? 0 : -1;
+        if (selected && focus) t.focus();
+      });
+      panel.setAttribute(
+        "aria-labelledby",
+        next === "reverse" ? "tab-reverse" : "tab-add",
+      );
+      amountLabel.textContent = labels[next].amount;
+      totalLabel.textContent = labels[next].total;
+      amountInput.placeholder = labels[next].placeholder;
+      render();
+    };
+
+    // Tab click + roving-tabindex keyboard support (Left/Right/Home/End)
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () =>
+        selectTab(tab.dataset.mode as GstMode),
+      );
+      tab.addEventListener("keydown", (e) => {
+        let target = -1;
+        if (e.key === "ArrowRight") target = (i + 1) % tabs.length;
+        else if (e.key === "ArrowLeft") target = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === "Home") target = 0;
+        else if (e.key === "End") target = tabs.length - 1;
+        if (target >= 0) {
+          e.preventDefault();
+          selectTab(tabs[target].dataset.mode as GstMode, true);
+        }
+      });
+    });
+
+    // Live calculation — input event fires on every keystroke/paste.
+    amountInput.addEventListener("input", render);
+    rateCustom.addEventListener("input", render);
+    rateSelect.addEventListener("change", () => {
+      const custom = rateSelect.value === "custom";
+      rateCustom.classList.toggle("hidden", !custom);
+      if (custom) rateCustom.focus();
+      render();
+    });
+
+    // Reset — let native reset run first, then clear derived UI.
+    form.addEventListener("reset", () => {
+      window.setTimeout(() => {
+        rateCustom.classList.add("hidden");
+        showError(amountError, undefined);
+        showError(rateError, undefined);
+        amountInput.setAttribute("aria-invalid", "false");
+        clearResults();
+        rateBadge.textContent = "18% GST";
+        hint.textContent = "Enter an amount to see your GST breakdown.";
+        hint.classList.remove("hidden");
+        amountInput.focus();
+      }, 0);
+    });
+
+    // Copy result to clipboard with graceful fallback.
+    copyBtn.addEventListener("click", async () => {
+      if (!latest) return;
+      const text = breakdownToText(mode, latest);
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+      copyLabel.textContent = "Copied!";
+      window.clearTimeout(copyTimer);
+      copyTimer = window.setTimeout(() => {
+        copyLabel.textContent = "Copy result";
+      }, 1800);
+    });
+
+    // Enter key anywhere in the form should not reload the page.
+    form.addEventListener("submit", (e) => e.preventDefault());
+
+    // Initial paint
+    selectTab("reverse");
+  }
+</script>

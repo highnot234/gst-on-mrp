@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import Calculator from "../components/Calculator.astro";
+import WhatIsGst from "../components/WhatIsGst.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import Formulas from "../components/Formulas.astro";
+import Faq from "../components/Faq.astro";
+import { site } from "../lib/site";
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: site.url,
+    description: site.description,
+    inLanguage: "en-IN",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: site.name,
+    url: site.url,
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+    description: site.description,
+  },
+];
+---
+
+<BaseLayout path="/">
+  {
+    structuredData.map((data) => (
+      <script
+        slot="head"
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(data)}
+      />
+    ))
+  }
+
+  <Hero />
+  <Calculator />
+  <WhatIsGst />
+  <HowItWorks />
+  <Formulas />
+  <Faq />
+</BaseLayout>

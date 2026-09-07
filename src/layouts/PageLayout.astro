@@ -1,0 +1,34 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Container from "../components/Container.astro";
+import PageHero from "../components/PageHero.astro";
+
+/**
+ * PageLayout — shell for standalone content pages (about, contact, legal).
+ * Renders SEO via BaseLayout, a heading band, and a centered prose column.
+ */
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+  updated?: string;
+}
+
+const { title, description, path, eyebrow, heading, intro, updated } =
+  Astro.props;
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <slot name="head" slot="head" />
+  <PageHero eyebrow={eyebrow} heading={heading} intro={intro} updated={updated} />
+  <section class="py-[clamp(3rem,6vw,5rem)]">
+    <Container>
+      <div class="prose-content mx-auto">
+        <slot />
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

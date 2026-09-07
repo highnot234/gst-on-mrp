@@ -1,0 +1,10 @@
+# wrangler.toml — Cloudflare Pages configuration for GST on MRP
+# Docs: https://developers.cloudflare.com/pages/configuration/wrangler/
+
+name = "gst-on-mrp"
+
+# Cloudflare Pages — static site deployment
+pages_build_output_dir = "dist"
+
+# Compatibility date — update when you upgrade Wrangler.
+compatibility_date = "2026-08-09"

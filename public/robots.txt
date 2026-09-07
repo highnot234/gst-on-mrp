@@ -1,0 +1,38 @@
+# ============================================================
+#  robots.txt — GST on MRP (https://gstonmrp.com)
+#  Generated: 2026-08-09
+# ============================================================
+
+# ── All well-behaved crawlers ────────────────────────────────
+User-agent: *
+Allow: /
+
+# Error pages — no crawling, no indexing
+Disallow: /404
+Disallow: /500
+
+# Internal Astro build artefacts
+Disallow: /_astro/
+
+# ── Aggressive / low-quality bots ───────────────────────────
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# ── Sitemaps ────────────────────────────────────────────────
+# Canonical single-file sitemap (submit this to Search Console)
+Sitemap: https://gstonmrp.com/sitemap.xml
+
+# Auto-generated sitemap index (links to sitemap-0.xml)
+Sitemap: https://gstonmrp.com/sitemap-index.xml

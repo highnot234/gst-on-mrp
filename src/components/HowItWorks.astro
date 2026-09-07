@@ -1,0 +1,96 @@
+---
+import Section from "./Section.astro";
+
+const flows = [
+  {
+    id: "reverse-gst",
+    tag: "Reverse GST",
+    title: "Reverse GST calculation",
+    intro:
+      "Start from a GST-inclusive MRP and work backwards to reveal the base price and the tax hidden inside it.",
+    steps: [
+      "Take the MRP, which already includes GST.",
+      "Divide it by (1 + rate/100) to get the base price.",
+      "Subtract the base price from the MRP to get the GST amount.",
+    ],
+    example: {
+      label: "Example — ₹1,180 at 18%",
+      rows: [
+        ["Base price", "₹1,000.00"],
+        ["GST amount", "₹180.00"],
+        ["CGST + SGST", "₹90.00 + ₹90.00"],
+      ],
+    },
+  },
+  {
+    id: "add-gst",
+    tag: "Add GST",
+    title: "Add GST calculation",
+    intro:
+      "Begin with a pre-tax base price and add GST on top to find the final, tax-inclusive amount.",
+    steps: [
+      "Take the base price, before any tax.",
+      "Multiply it by rate/100 to get the GST amount.",
+      "Add the GST amount to the base price for the final price.",
+    ],
+    example: {
+      label: "Example — ₹1,000 at 18%",
+      rows: [
+        ["GST amount", "₹180.00"],
+        ["Final price", "₹1,180.00"],
+        ["CGST + SGST", "₹90.00 + ₹90.00"],
+      ],
+    },
+  },
+];
+---
+
+<Section
+  id="how-it-works"
+  eyebrow="How it works"
+  title="Two calculations, one clear breakdown"
+  description="Whether the price includes GST or not, the steps stay simple and the result is always transparent."
+>
+  <div class="mt-12 grid gap-6 lg:grid-cols-2">
+    {
+      flows.map((flow) => (
+        <article id={flow.id} class="card card-hover scroll-mt-24 flex flex-col p-6 sm:p-8">
+          <span class="eyebrow">{flow.tag}</span>
+          <h3 class="mt-3 text-xl font-bold tracking-tight text-[var(--color-ink)]">
+            {flow.title}
+          </h3>
+          <p class="mt-2 text-[0.9375rem] leading-relaxed text-[var(--color-ink-3)]">
+            {flow.intro}
+          </p>
+
+          <ol class="mt-6 space-y-3">
+            {flow.steps.map((step, i) => (
+              <li class="flex gap-3">
+                <span class="tnum grid h-6 w-6 shrink-0 place-items-center rounded-[var(--radius-full)] bg-[var(--color-ink)] text-xs font-bold text-white">
+                  {i + 1}
+                </span>
+                <span class="text-[0.9375rem] leading-relaxed text-[var(--color-ink-2)]">
+                  {step}
+                </span>
+              </li>
+            ))}
+          </ol>
+
+          <div class="mt-6 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-muted)] p-4">
+            <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-4)]">
+              {flow.example.label}
+            </p>
+            <dl class="space-y-1.5">
+              {flow.example.rows.map(([k, v]) => (
+                <div class="flex items-center justify-between gap-4 text-sm">
+                  <dt class="text-[var(--color-ink-3)]">{k}</dt>
+                  <dd class="tnum font-semibold text-[var(--color-ink)]">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</Section>

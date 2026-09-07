@@ -1,0 +1,8 @@
+# Cloudflare Pages redirects
+# Docs: https://developers.cloudflare.com/pages/configuration/redirects/
+
+# www → apex (canonical domain)
+https://www.gstonmrp.com/* https://gstonmrp.com/:splat 301
+
+# Convenience redirect: /sitemap → canonical sitemap file
+/sitemap /sitemap.xml 301

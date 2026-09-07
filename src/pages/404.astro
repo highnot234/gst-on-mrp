@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ErrorPage from "../components/ErrorPage.astro";
+import { site } from "../lib/site";
+---
+
+<BaseLayout
+  title={`Page not found — ${site.name}`}
+  description="The page you are looking for does not exist. Head back to the GST on MRP calculator or browse other sections."
+  path="/404"
+  noindex={true}
+>
+  <ErrorPage
+    code={404}
+    title="Page not found"
+    description="The page you requested doesn't exist or may have moved. Check the URL, or use the links below to find what you need."
+    hint="If you followed a link from another site, it may be outdated."
+  />
+</BaseLayout>

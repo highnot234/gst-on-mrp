@@ -1,0 +1,62 @@
+---
+import Container from "./Container.astro";
+
+/**
+ * Section — consistent vertical rhythm + optional centered heading block.
+ * Renders a semantic <section> with an id for anchor navigation.
+ */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  muted?: boolean;
+  align?: "left" | "center";
+  class?: string;
+  headingLevel?: "h1" | "h2";
+}
+
+const {
+  id,
+  eyebrow,
+  title,
+  description,
+  muted = false,
+  align = "center",
+  class: className = "",
+  headingLevel = "h2",
+} = Astro.props;
+
+const Heading = headingLevel;
+const alignCls = align === "center" ? "text-center mx-auto" : "text-left";
+---
+
+<section
+  id={id}
+  class:list={[
+    "scroll-mt-24 py-[clamp(4rem,8vw,7rem)]",
+    muted ? "bg-[var(--color-muted)]" : "bg-[var(--color-bg)]",
+    className,
+  ]}
+>
+  <Container>
+    {
+      (eyebrow || title || description) && (
+        <div class:list={["max-w-2xl", alignCls]}>
+          {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+          {title && (
+            <Heading class="text-[clamp(1.5rem,2.5vw,2rem)] font-bold tracking-tight">
+              {title}
+            </Heading>
+          )}
+          {description && (
+            <p class="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-3)]">
+              {description}
+            </p>
+          )}
+        </div>
+      )
+    }
+    <slot />
+  </Container>
+</section>

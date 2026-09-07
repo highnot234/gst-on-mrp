@@ -1,0 +1,177 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Container from "../components/Container.astro";
+import { site } from "../lib/site";
+
+const title = `Contact us — ${site.name}`;
+const description =
+  "Get in touch with the GST on MRP team. Send questions, feedback or corrections and we will get back to you.";
+const contactEmail = "hello@gstonmrp.com";
+
+const methods = [
+  {
+    label: "Email",
+    value: contactEmail,
+    href: `mailto:${contactEmail}`,
+    hint: "Best for detailed questions and feedback.",
+  },
+  {
+    label: "Response time",
+    value: "1–2 business days",
+    hint: "We read every message that comes in.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/contact">
+  <PageHero
+    eyebrow="Contact"
+    heading="Get in touch"
+    intro="Questions, suggestions or a correction to report? We would genuinely like to hear from you."
+  />
+
+  <section class="py-[clamp(3rem,6vw,5rem)]">
+    <Container>
+      <div class="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[1fr_1.3fr] lg:gap-12">
+        <!-- Contact methods -->
+        <div class="space-y-4">
+          {
+            methods.map((m) => (
+              <div class="card p-5">
+                <p class="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-4)]">
+                  {m.label}
+                </p>
+                {m.href ? (
+                  <a
+                    href={m.href}
+                    class="mt-1 block text-lg font-semibold text-[var(--color-accent-ink)] underline decoration-1 underline-offset-2 hover:text-[var(--color-accent)]"
+                  >
+                    {m.value}
+                  </a>
+                ) : (
+                  <p class="mt-1 text-lg font-semibold text-[var(--color-ink)]">
+                    {m.value}
+                  </p>
+                )}
+                <p class="mt-1 text-sm text-[var(--color-ink-3)]">{m.hint}</p>
+              </div>
+            ))
+          }
+          <p class="text-sm leading-relaxed text-[var(--color-ink-3)]">
+            Prefer email? Write to us directly at
+            <a
+              href={`mailto:${contactEmail}`}
+              class="font-medium text-[var(--color-accent-ink)] underline underline-offset-2 hover:text-[var(--color-accent)]"
+              >{contactEmail}</a
+            >.
+          </p>
+        </div>
+
+        <!-- Contact form -->
+        <div class="card p-6 sm:p-8">
+          <form id="contact-form" class="space-y-5" novalidate>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="name" class="mb-1.5 block text-sm font-semibold text-[var(--color-ink)]">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  class="h-11 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-[0.9375rem] text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+                />
+              </div>
+              <div>
+                <label for="email" class="mb-1.5 block text-sm font-semibold text-[var(--color-ink)]">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  class="h-11 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-[0.9375rem] text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="subject" class="mb-1.5 block text-sm font-semibold text-[var(--color-ink)]">
+                Subject
+              </label>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                autocomplete="off"
+                class="h-11 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-[0.9375rem] text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+              />
+            </div>
+
+            <div>
+              <label for="message" class="mb-1.5 block text-sm font-semibold text-[var(--color-ink)]">
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+                class="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-[0.9375rem] leading-relaxed text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="inline-flex h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-accent)] px-5 text-[0.9375rem] font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,background-color,box-shadow] duration-200 ease-[var(--ease-standard)] hover:bg-[var(--color-accent-hover)] hover:shadow-[var(--shadow-md)] active:scale-[0.98]"
+            >
+              Send message
+            </button>
+
+            <p id="form-status" role="status" class="hidden text-sm text-[var(--color-accent-ink)]"></p>
+            <p class="text-xs leading-relaxed text-[var(--color-ink-4)]">
+              Submitting opens your email app with the message pre-filled — your
+              details are never sent to or stored on our servers.
+            </p>
+          </form>
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ contactEmail }}>
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("form-status");
+  if (!form || !status) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(/** @type {HTMLFormElement} */ (form));
+    const name = String(data.get("name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const message = String(data.get("message") || "").trim();
+    const subject = String(data.get("subject") || "").trim();
+
+    if (!name || !email || !message) {
+      status.textContent = "Please fill in your name, email and message.";
+      status.classList.remove("hidden");
+      status.style.color = "#dc2626";
+      return;
+    }
+
+    const mailSubject = subject || `Message from ${name} — GST on MRP`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    const href = `mailto:${contactEmail}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = href;
+
+    status.textContent = "Opening your email app…";
+    status.style.color = "";
+    status.classList.remove("hidden");
+  });
+</script>

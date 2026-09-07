@@ -1,0 +1,83 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { site } from "../lib/site";
+
+const title = `Terms & conditions — ${site.name}`;
+const description =
+  "The terms and conditions for using GST on MRP. The calculator is provided for informational purposes only and results should be independently verified.";
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  path="/terms-and-conditions"
+  eyebrow="Legal"
+  heading="Terms & conditions"
+  intro="Please read these terms carefully before using the site."
+  updated="6 July 2026"
+>
+  <p>
+    These terms and conditions govern your use of <strong>{site.name}</strong>.
+    By accessing or using this website, you agree to be bound by these terms. If
+    you do not agree, please do not use the site.
+  </p>
+
+  <h2>Informational use only</h2>
+  <p>
+    The calculators and content on this site are provided for general
+    informational and educational purposes. They are not a substitute for
+    professional tax, accounting or legal advice. You should independently verify
+    any figure before relying on it for invoices, filings or business decisions.
+  </p>
+
+  <h2>No warranty</h2>
+  <p>
+    The site is provided on an "as is" and "as available" basis without
+    warranties of any kind, express or implied. While we strive for accuracy
+    using standard GST formulas, we do not guarantee that results are complete,
+    current or error-free, and rounding may differ from official calculations.
+  </p>
+
+  <h2>Limitation of liability</h2>
+  <p>
+    To the fullest extent permitted by law, we shall not be liable for any loss
+    or damage arising from your use of, or reliance on, this website or its
+    results, including any direct, indirect, incidental or consequential
+    damages.
+  </p>
+
+  <h2>Acceptable use</h2>
+  <p>
+    You agree to use the site lawfully and not to attempt to disrupt, overload,
+    reverse-engineer for malicious purposes, or gain unauthorised access to the
+    site or its underlying systems.
+  </p>
+
+  <h2>Intellectual property</h2>
+  <p>
+    The design, text, layout and original content of this site are owned by
+    {site.name} unless otherwise stated. You may use the calculator freely for
+    personal and business purposes, but you may not copy or redistribute the
+    site's content as your own.
+  </p>
+
+  <h2>External links</h2>
+  <p>
+    This site may contain links to third-party websites provided for
+    convenience. We do not endorse and are not responsible for the content,
+    products or practices of those external sites.
+  </p>
+
+  <h2>Changes to these terms</h2>
+  <p>
+    We may revise these terms at any time. Continued use of the site after
+    changes take effect constitutes acceptance of the updated terms. The "last
+    updated" date above shows when this page was most recently revised.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about these terms? Please use our
+    <a href="/contact">contact page</a> to get in touch.
+  </p>
+</PageLayout>

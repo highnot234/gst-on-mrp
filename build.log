@@ -1,0 +1,28 @@
+[2m05:50:33[22m [34m[content][39m Syncing content
+[2m05:50:33[22m [34m[content][39m Synced content
+[2m05:50:33[22m [34m[types][39m Generated [2m41ms[22m
+[2m05:50:33[22m [34m[build][39m output: [34m"static"[39m
+[2m05:50:33[22m [34m[build][39m mode: [34m"static"[39m
+[2m05:50:33[22m [34m[build][39m directory: [34mC:\mrpgstcalculator\dist\[39m
+[2m05:50:33[22m [34m[build][39m Collecting build info...
+[2m05:50:33[22m [34m[build][39m [32m✓ Completed in 58ms.[39m
+[2m05:50:33[22m [34m[build][39m Building static entrypoints...
+[2m05:50:34[22m [34m[vite][39m [32m✓ built in 787ms[39m
+[2m05:50:34[22m [34m[build][39m [32m✓ Completed in 819ms.[39m
+
+[42m[30m building client (vite) [39m[49m
+[2m05:50:34[22m [34m[vite][39m transforming...
+[2m05:50:34[22m [34m[vite][39m [32m✓[39m 3 modules transformed.
+[2m05:50:34[22m [34m[vite][39m rendering chunks...
+[2m05:50:34[22m [34m[vite][39m computing gzip size...
+[2m05:50:34[22m [34m[vite][39m [2mdist/[22m[36m_astro/Calculator.astro_astro_type_script_index_0_lang.BqKJ4hvz.js  [39m[1m[2m4.64 kB[22m[1m[22m[2m │ gzip: 1.90 kB[22m
+[2m05:50:34[22m [34m[vite][39m [32m✓ built in 38ms[39m
+
+[42m[30m generating static routes [39m[49m
+[2m05:50:34[22m [32m▶[39m src/pages/index.astro
+[2m05:50:34[22m   [34m└─[39m [2m/index.html[22m [2m(+11ms)[22m 
+[2m05:50:34[22m [32m✓ Completed in 21ms.
+[39m
+[2m05:50:34[22m [34m[@astrojs/sitemap][39m `sitemap-index.xml` created at `dist`
+[2m05:50:34[22m [34m[build][39m 1 page(s) built in [1m977ms[22m
+[2m05:50:34[22m [34m[build][39m [1mComplete![22m

@@ -1,0 +1,30 @@
+---
+/**
+ * 500 — server / unexpected error fallback.
+ *
+ * In Astro's static output mode this page is never truly "served" by the
+ * framework (there is no runtime server to catch exceptions), but including
+ * it means your hosting platform can be configured to show it instead of its
+ * own generic error screen. Vercel, Netlify and most static hosts look for
+ * /500.html automatically.
+ *
+ * noindex: true — error pages should never appear in search results.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ErrorPage from "../components/ErrorPage.astro";
+import { site } from "../lib/site";
+---
+
+<BaseLayout
+  title={`Something went wrong — ${site.name}`}
+  description="An unexpected error occurred. Please try again or return to the GST on MRP homepage."
+  path="/500"
+  noindex={true}
+>
+  <ErrorPage
+    code={500}
+    title="Something went wrong"
+    description="An unexpected error occurred on our end. This isn't your fault — please try refreshing the page, or come back in a moment."
+    hint="If the problem persists, contact us and we'll look into it."
+  />
+</BaseLayout>

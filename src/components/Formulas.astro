@@ -1,0 +1,88 @@
+---
+import Section from "./Section.astro";
+
+interface FormulaLine {
+  result: string;
+  expr: string;
+}
+
+const groups: {
+  id: string;
+  tag: string;
+  title: string;
+  note: string;
+  lines: FormulaLine[];
+}[] = [
+  {
+    id: "reverse-formula",
+    tag: "Reverse GST formula",
+    title: "Extract GST from an inclusive price",
+    note: "Use when the price (MRP) already includes GST.",
+    lines: [
+      { result: "Base Price", expr: "MRP / (1 + GST / 100)" },
+      { result: "GST Amount", expr: "MRP − Base Price" },
+      { result: "CGST", expr: "GST Amount / 2" },
+      { result: "SGST", expr: "GST Amount / 2" },
+      { result: "IGST", expr: "GST Amount" },
+    ],
+  },
+  {
+    id: "add-formula",
+    tag: "GST formula",
+    title: "Add GST to a base price",
+    note: "Use when the price is exclusive of GST.",
+    lines: [
+      { result: "GST Amount", expr: "Base Price × GST / 100" },
+      { result: "Final Price", expr: "Base Price + GST Amount" },
+      { result: "CGST", expr: "GST Amount / 2" },
+      { result: "SGST", expr: "GST Amount / 2" },
+      { result: "IGST", expr: "GST Amount" },
+    ],
+  },
+];
+---
+
+<Section
+  id="formulas"
+  muted
+  eyebrow="Formulas"
+  title="The exact formulas behind every result"
+  description="No black box. Here is precisely how each figure is computed, so you can verify the numbers yourself."
+>
+  <div class="mt-12 grid gap-6 lg:grid-cols-2">
+    {
+      groups.map((g) => (
+        <article id={g.id} class="card card-hover scroll-mt-24 overflow-hidden">
+          <div class="flex items-center justify-between gap-3 border-b border-[var(--color-border)] px-6 py-4">
+            <div>
+              <span class="eyebrow">{g.tag}</span>
+              <h3 class="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)]">
+                {g.title}
+              </h3>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <dl class="space-y-2.5 font-mono text-[0.9375rem]">
+              {g.lines.map((line) => (
+                <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 rounded-[var(--radius-md)] bg-[var(--color-muted)] px-4 py-3">
+                  <dt class="font-semibold text-[var(--color-ink)]">{line.result}</dt>
+                  <span class="text-[var(--color-accent)]" aria-hidden="true">
+                    =
+                  </span>
+                  <dd class="text-[var(--color-ink-2)]">{line.expr}</dd>
+                </div>
+              ))}
+            </dl>
+            <p class="mt-4 text-sm text-[var(--color-ink-3)]">{g.note}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="mx-auto mt-8 max-w-2xl text-center text-sm text-[var(--color-ink-4)]">
+    CGST and SGST apply to sales within a state; IGST applies to inter-state
+    sales and equals the full GST amount.
+  </p>
+</Section>

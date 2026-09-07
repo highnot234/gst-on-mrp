@@ -1,0 +1,159 @@
+---
+import Container from "./Container.astro";
+import Logo from "./Logo.astro";
+import Button from "./Button.astro";
+import { primaryNav } from "../lib/site";
+
+const currentPath = new URL(Astro.request.url).pathname;
+
+/** True if the nav link href matches the current page (exact or prefix for anchors). */
+const isActive = (href: string) => {
+  if (href.startsWith("/#")) return currentPath === "/";
+  return currentPath === href || currentPath.startsWith(href + "/");
+};
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-40 border-b border-transparent bg-[color-mix(in_srgb,var(--color-bg)_80%,transparent)] backdrop-blur-md transition-colors duration-200 data-[scrolled=true]:border-[var(--color-border)] data-[scrolled=true]:bg-[color-mix(in_srgb,var(--color-bg)_90%,transparent)]"
+>
+  <Container>
+    <div class="flex h-[72px] items-center justify-between gap-4">
+      <Logo />
+
+      <!-- Desktop nav -->
+      <nav aria-label="Primary" class="hidden md:block">
+        <ul class="flex items-center gap-1">
+          {
+            primaryNav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  class="rounded-[var(--radius-sm)] px-3 py-2 text-[0.9375rem] font-medium text-[var(--color-ink-2)] transition-colors duration-150 hover:bg-[var(--color-muted)] hover:text-[var(--color-ink)] aria-[current=page]:bg-[var(--color-muted)] aria-[current=page]:text-[var(--color-ink)] aria-[current=page]:font-semibold"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="hidden items-center gap-2 md:flex">
+        <Button href="/#calculator" variant="primary" size="md">
+          Open calculator
+        </Button>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button
+        id="menu-toggle"
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-muted)] md:hidden"
+        aria-label="Open menu"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+      >
+        <svg
+          class="menu-icon"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg
+          class="close-icon hidden"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </Container>
+
+  <!-- Mobile menu panel -->
+  <div
+    id="mobile-menu"
+    class="hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] md:hidden"
+  >
+    <Container class="py-4">
+      <nav aria-label="Mobile">
+        <ul class="flex flex-col gap-1">
+          {
+            primaryNav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  class="mobile-link block rounded-[var(--radius-md)] px-4 py-3 text-base font-medium text-[var(--color-ink-2)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-ink)] aria-[current=page]:bg-[var(--color-muted)] aria-[current=page]:font-semibold aria-[current=page]:text-[var(--color-ink)]"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-3">
+          <Button href="/#calculator" variant="primary" size="lg" class="w-full mobile-link">
+            Open calculator
+          </Button>
+        </div>
+      </nav>
+    </Container>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header");
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const menuIcon = toggle?.querySelector(".menu-icon");
+  const closeIcon = toggle?.querySelector(".close-icon");
+
+  // Shadow/border on scroll
+  const onScroll = () => {
+    if (!header) return;
+    header.dataset.scrolled = String(window.scrollY > 8);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Mobile menu open/close
+  const setOpen = (open: boolean) => {
+    if (!menu || !toggle) return;
+    menu.classList.toggle("hidden", !open);
+    menuIcon?.classList.toggle("hidden", open);
+    closeIcon?.classList.toggle("hidden", !open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  };
+
+  toggle?.addEventListener("click", () => {
+    setOpen(menu?.classList.contains("hidden") ?? true);
+  });
+
+  // Close on nav link tap and on Escape
+  menu?.querySelectorAll(".mobile-link").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
+</script>

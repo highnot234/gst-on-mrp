@@ -1,0 +1,107 @@
+---
+import Container from "./Container.astro";
+
+/**
+ * ErrorPage — shared visual shell for 404, 500 and any future error pages.
+ * Keeps the branding, header and footer intact and provides a clear, helpful
+ * message with onward navigation so users are never truly stuck.
+ */
+interface Props {
+  code: string | number;
+  title: string;
+  description: string;
+  hint?: string;
+}
+
+const { code, title, description, hint } = Astro.props;
+
+const suggestions = [
+  { label: "Open calculator", href: "/#calculator" },
+  { label: "How it works", href: "/#how-it-works" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "About us", href: "/about" },
+  { label: "Contact us", href: "/contact" },
+];
+---
+
+<section class="relative flex min-h-[calc(100vh-72px)] items-center overflow-hidden hero-glow">
+  <div class="pointer-events-none absolute inset-0 dot-grid" aria-hidden="true"></div>
+
+  <Container class="relative py-[clamp(4rem,8vw,7rem)]">
+    <div class="mx-auto max-w-2xl text-center">
+
+      <!-- Error code -->
+      <p
+        class="tnum inline-block select-none text-[clamp(5rem,15vw,9rem)] font-black leading-none tracking-[-0.04em] text-[var(--color-border)]"
+        aria-hidden="true"
+      >
+        {code}
+      </p>
+
+      <!-- Heading -->
+      <h1
+        class="mt-2 text-[clamp(1.75rem,3vw,2.5rem)] font-bold tracking-tight text-[var(--color-ink)]"
+      >
+        {title}
+      </h1>
+
+      <!-- Description -->
+      <p class="mx-auto mt-4 max-w-lg text-[1.0625rem] leading-relaxed text-[var(--color-ink-3)]">
+        {description}
+      </p>
+
+      {
+        hint && (
+          <p class="mx-auto mt-2 max-w-lg text-sm text-[var(--color-ink-4)]">
+            {hint}
+          </p>
+        )
+      }
+
+      <!-- Primary action -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="/"
+          class="inline-flex h-11 items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-accent)] px-5 text-[0.9375rem] font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,background-color,box-shadow] duration-200 hover:bg-[var(--color-accent-hover)] hover:shadow-[var(--shadow-md)] active:scale-[0.98]"
+        >
+          <svg
+            width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Back to home
+        </a>
+        <a
+          href="/#calculator"
+          class="inline-flex h-11 items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] px-5 text-[0.9375rem] font-semibold text-[var(--color-ink)] shadow-[var(--shadow-xs)] transition-[transform,border-color,box-shadow] duration-200 hover:border-[var(--color-ink-4)] hover:shadow-[var(--shadow-sm)] active:scale-[0.98]"
+        >
+          Open calculator
+        </a>
+      </div>
+
+      <!-- Quick nav -->
+      <nav aria-label="Helpful links" class="mt-10">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-4)]">
+          Other pages
+        </p>
+        <ul class="flex flex-wrap justify-center gap-2">
+          {
+            suggestions.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  class="inline-flex h-8 items-center rounded-[var(--radius-full)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-sm font-medium text-[var(--color-ink-2)] transition-colors hover:border-[var(--color-ink-4)] hover:text-[var(--color-ink)]"
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </Container>
+</section>

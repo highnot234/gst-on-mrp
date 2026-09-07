@@ -1,0 +1,39 @@
+---
+import Container from "./Container.astro";
+
+/** PageHero — compact heading band for standalone content pages. */
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+  updated?: string;
+}
+const { eyebrow, heading, intro, updated } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-[var(--color-border)] hero-glow">
+  <Container class="py-[clamp(3rem,6vw,5rem)]">
+    <div class="mx-auto max-w-3xl text-center">
+      {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+      <h1
+        class="text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--color-ink)]"
+      >
+        {heading}
+      </h1>
+      {
+        intro && (
+          <p class="mx-auto mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-3)]">
+            {intro}
+          </p>
+        )
+      }
+      {
+        updated && (
+          <p class="mt-6 text-sm text-[var(--color-ink-4)]">
+            Last updated: {updated}
+          </p>
+        )
+      }
+    </div>
+  </Container>
+</section>
